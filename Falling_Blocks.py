@@ -1,4 +1,4 @@
-import random, time, pygame, sys
+import random, time, pygame, sys, os
 from pygame.locals import *
 
 FPS = 60
@@ -10,7 +10,7 @@ BOARDHEIGHT = 30
 BLANK = '.'
 
 MOVESIDEWAYSFREQ = 0.10
-MOVEDOWNFREQ = 0.12
+MOVEDOWNFREQ = 0.1
 
 XMARGIN = int((WINDOWWIDTH - BOARDWIDTH * BOXSIZE) / 2)
 TOPMARGIN = WINDOWHEIGHT - (BOARDHEIGHT * BOXSIZE) - 5
@@ -76,6 +76,12 @@ O_SHAPE_TEMPLATE = [['.....',
                      '.....',
                      '.OO..',
                      '.OO..',
+                     '.....']]
+
+X_SHAPE_TEMPLATE = [['.....',
+                     '.O.O.',
+                     '..O..',
+                     '.O.O.',
                      '.....']]
 
 J_SHAPE_TEMPLATE = [['.....',
@@ -236,7 +242,8 @@ PIECES = {'S': S_SHAPE_TEMPLATE,
           'P': P_SHAPE_TEMPLATE,
           'B': B_SHAPE_TEMPLATE,
           'Y': Y_SHAPE_TEMPLATE,
-          'H': H_SHAPE_TEMPLATE}
+          'H': H_SHAPE_TEMPLATE,
+          'X': X_SHAPE_TEMPLATE}
 
 
 def main():
@@ -245,10 +252,18 @@ def main():
     FPSCLOCK = pygame.time.Clock()
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
     BASICFONT = pygame.font.Font('freesansbold.ttf', 18)
-    BIGFONT = pygame.font.Font('freesansbold.ttf', 100)
+    BIGFONT = pygame.font.Font('freesansbold.ttf', 80)
     pygame.display.set_caption('Falling Blocks')
 
     showTextScreen('Falling Blocks')
+    DISPLAYSURF.fill(BGCOLOR)
+    pygame.display.update()
+    
+    if os.path.isfile('highscore.txt') and os.path.getsize("highscore.txt") != 0:
+        showTextScreen(f'Highscore to beat: {readHighscore()}')
+    else:
+        initHighscore()
+        showTextScreen(f'Highscore to beat: {readHighscore()}')
     gameLoop()
     playMusic()
 
@@ -257,7 +272,8 @@ def gameLoop():
         playMusic()
         runGame()
         pygame.mixer.music.stop()
-        showTextScreen('Game Over!')
+        time.sleep(1)
+        showTextScreen('Game over!')
 
 def playMusic():
     if random.randint(0, 1) == 0:
@@ -266,6 +282,22 @@ def playMusic():
         pygame.mixer.music.load('tetrisc.mid')
 
     pygame.mixer.music.play(-1, 0.0)
+
+def initHighscore():
+    file = open("highscore.txt", "w")
+    file.write("0")
+    file.close()
+
+def writeHighscore(highscore):
+    file = open("highscore.txt", "w")
+    file.write(str(highscore))
+    file.close()
+    
+def readHighscore():
+    file = open("highscore.txt", "r")
+    highscore = file.readline()
+    file.close()
+    return highscore
 
 def runGame():
     # setup variables for the start of the game
@@ -371,6 +403,11 @@ def runGame():
                 # falling piece has landed, set it on the board
                 addToBoard(board, fallingPiece)
                 score += removeCompleteLines(board) * 2
+                highscore = score
+                # TO DO
+                if highscore > int(readHighscore()):
+                    writeHighscore(highscore)
+                    
                 level, fallFreq = calculateLevelAndFallFreq(score)
                 fallingPiece = None
             else:
