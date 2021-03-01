@@ -10,6 +10,9 @@ Will be released under a "GPLv2 or Later" license
 
 This is an early development version.
 
+== Requirements ==
+You need a Python3 interpreter and Pygame library to play this game.
+
 == Changes ==
 
 == 0.0.1 ==
