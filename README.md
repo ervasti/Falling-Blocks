@@ -20,3 +20,6 @@ Added some new blocks.
 
 == 0.0.2 ==
 Added highscore functionality.
+
+== 0.0.3 ==
+Removed X-block
