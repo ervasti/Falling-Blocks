@@ -78,11 +78,6 @@ O_SHAPE_TEMPLATE = [['.....',
                      '.OO..',
                      '.....']]
 
-X_SHAPE_TEMPLATE = [['.....',
-                     '.O.O.',
-                     '..O..',
-                     '.O.O.',
-                     '.....']]
 
 J_SHAPE_TEMPLATE = [['.....',
                      '.O...',
@@ -242,8 +237,7 @@ PIECES = {'S': S_SHAPE_TEMPLATE,
           'P': P_SHAPE_TEMPLATE,
           'B': B_SHAPE_TEMPLATE,
           'Y': Y_SHAPE_TEMPLATE,
-          'H': H_SHAPE_TEMPLATE,
-          'X': X_SHAPE_TEMPLATE}
+          'H': H_SHAPE_TEMPLATE}
 
 
 def main():
@@ -258,7 +252,7 @@ def main():
     showTextScreen('Falling Blocks')
     DISPLAYSURF.fill(BGCOLOR)
     pygame.display.update()
-    
+
     if os.path.isfile('highscore.txt') and os.path.getsize("highscore.txt") != 0:
         showTextScreen(f'Highscore to beat: {readHighscore()}')
     else:
@@ -292,7 +286,7 @@ def writeHighscore(highscore):
     file = open("highscore.txt", "w")
     file.write(str(highscore))
     file.close()
-    
+
 def readHighscore():
     file = open("highscore.txt", "r")
     highscore = file.readline()
@@ -407,7 +401,7 @@ def runGame():
                 # TO DO
                 if highscore > int(readHighscore()):
                     writeHighscore(highscore)
-                    
+
                 level, fallFreq = calculateLevelAndFallFreq(score)
                 fallingPiece = None
             else:
