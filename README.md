@@ -1,6 +1,6 @@
 # Falling-Blocks
 
-Falling Blocks (a Tetris like game) v. 0.0.2
+Falling Blocks (a Tetris like game) v. 0.0.3
 By Ari Ervasti
 ari.ervasti87@gmail.com
 
