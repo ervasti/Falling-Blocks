@@ -22,4 +22,4 @@ Added some new blocks.
 Added highscore functionality.
 
 == 0.0.3 ==
-Removed X-block
+Removed X-block.
